@@ -3,6 +3,10 @@ defmodule Discuss.TopicController do
 
   alias Discuss.Topic
 
+  def index(conn, _params) do
+    render conn, "index.html"
+  end
+
   def new(conn, _params) do
     changeset = Topic.changset(%Topic{}, %{})
 
@@ -14,7 +18,9 @@ defmodule Discuss.TopicController do
 
     case Repo.insert(changeset) do
       {:ok, _post} ->
-        render conn, "new.html", changeset: Topic.changset(%Topic{}, %{})
+        conn
+        |> put_flash(:info, "Topic created successfully.")
+        |> redirect(to: "/")
       {:error, changeset} ->
         render conn, "new.html", changeset: changeset
     end
