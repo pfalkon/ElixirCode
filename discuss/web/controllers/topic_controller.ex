@@ -4,7 +4,8 @@ defmodule Discuss.TopicController do
   alias Discuss.Topic
 
   def index(conn, _params) do
-    render conn, "index.html"
+    topics = Repo.all(Topic)
+    render conn, "index.html", topics: topics
   end
 
   def new(conn, _params) do
@@ -20,7 +21,7 @@ defmodule Discuss.TopicController do
       {:ok, _post} ->
         conn
         |> put_flash(:info, "Topic created successfully.")
-        |> redirect(to: "/")
+        |> redirect(to: topic_path(conn, :index))
       {:error, changeset} ->
         render conn, "new.html", changeset: changeset
     end
