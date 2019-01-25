@@ -14,7 +14,7 @@ defmodule Discuss.TopicController do
   end
 
   def create(conn, %{"topic" => topic}) do
-    changeset = Topic.changset(%Topic{}, topic)
+    changeset = Topic.changset(%Topic{}, Map.put(topic, "uuid", Ecto.UUID.generate))
 
     case Repo.insert(changeset) do
       {:ok, _post} ->
